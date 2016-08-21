@@ -133,6 +133,9 @@ namespace akiss.GitHub.YetAnotherMimeMagic
     [XmlRoot(ElementName = "match")]
     public class Match
     {
+        [XmlIgnore]
+        public string SearchPattern;
+
         [XmlAttribute(AttributeName = "value", DataType = "string")]
         public string Value;
 

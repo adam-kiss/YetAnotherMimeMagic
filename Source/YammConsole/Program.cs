@@ -12,8 +12,6 @@ namespace akiss.GitHub.YammConsole
     {
         static void Main(string[] args)
         {
-            args = new string[] { @"c:\temp\" };
-
             if (args == null || args.Length != 1)
             {
                 Console.WriteLine("Usage: \n YammConsole.exe [file|directory]");

@@ -155,22 +155,9 @@ namespace akiss.GitHub.YetAnotherMimeMagic
             // try for exact match
             if (int.TryParse(match.Offset, out start))
             {
-                switch (match.Type)
-                {
-                    case "string":
-                        // for utf-8 encoded text files
-                        var croped = new string(content.Skip(start).ToArray().Take(Math.Min(match.Value.Length + 16, content.Length - start)).ToArray());
-                        result = croped.Contains(match.Value);
-                        break;
-
-                    case "byte":
-                        result = content.Length > start && content[start] == int.Parse(match.Value);
-                        break;
-
-                    default:
-                        result = false;
-                        break;
-                }
+                // for utf-8 encoded text files with bom
+                var croped = new string(content.Skip(start).ToArray().Take(Math.Min(match.SearchPattern.Length + 4, content.Length - start)).ToArray());
+                result = croped.Contains(match.SearchPattern);
             }
             else
             {
@@ -181,20 +168,7 @@ namespace akiss.GitHub.YetAnotherMimeMagic
                     int.TryParse(bounds[1], out end))
                 {
                     var croped = new string(content.Skip(start).ToArray().Take(Math.Min(end - start, content.Length - start)).ToArray());
-                    switch (match.Type)
-                    {
-                        case "string":
-                            result = croped.Contains(match.Value);
-                            break;
-
-                        case "byte":
-                            result = croped.Contains((char)int.Parse(match.Value));
-                            break;
-
-                        default:
-                            result = false;
-                            break;
-                    }
+                    result = croped.Contains(match.SearchPattern);
                 }
             }
 
