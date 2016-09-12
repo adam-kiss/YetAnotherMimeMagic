@@ -88,10 +88,20 @@ namespace akiss.GitHub.YetAnotherMimeMagic
                 var mimes = _allTypes;
                 do
                 {
+                    // let's try to find by content
                     var found = mimes.Find(mime =>
                     {
-                        return EvaluateSingleMime(extension, contentString, mime, result);
+                        return EvaluateSingleMimeByContent(contentString, mime, result);
                     });
+
+                    // fallback to its extension
+                    if (found == null)
+                    {
+                        found = mimes.Find(mime =>
+                        {
+                            return EvaluateSingleMimeByExtension(extension, mime, result);
+                        });
+                    }
 
                     // is there any sub type for this type
                     mimes = _allTypes.Where(p => p.SubClassOf != null && p.SubClassOf.Type == found?.Type).ToList();
@@ -118,7 +128,7 @@ namespace akiss.GitHub.YetAnotherMimeMagic
         /// <summary>
         /// According to its name
         /// </summary>
-        private static bool EvaluateSingleMime(string extension, string content, MimeType mime, MimeMagicResult diagnostic)
+        private static bool EvaluateSingleMimeByContent(string content, MimeType mime, MimeMagicResult diagnostic)
         {
             var matching = false;
 
@@ -130,6 +140,13 @@ namespace akiss.GitHub.YetAnotherMimeMagic
                 if (matching)
                     diagnostic.FoundByContent = true;
             }
+
+            return matching;
+        }
+
+        private static bool EvaluateSingleMimeByExtension(string extension, MimeType mime, MimeMagicResult diagnostic)
+        {
+            var matching = false;
 
             // fallback to the file extension.
             if (!matching)
