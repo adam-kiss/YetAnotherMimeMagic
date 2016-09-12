@@ -119,7 +119,14 @@ namespace akiss.GitHub.YetAnotherMimeMagic
                         break;
 
                     case "byte":
-                        match.SearchPattern = ((char)int.Parse(match.Value)).ToString();
+                        if (match.Value.StartsWith("0x"))
+                        {
+                            match.SearchPattern = ((char)int.Parse(match.Value.Substring(2), NumberStyles.HexNumber)).ToString();
+                        }
+                        else
+                        {
+                            match.SearchPattern = ((char)int.Parse(match.Value)).ToString();
+                        }
                         result = true;
                         break;
 
