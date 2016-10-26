@@ -36863,4 +36863,10 @@
     <glob pattern="*.xdgapp"/>
   </mime-type>
 
+  <mime-type type="application/vnd.geogebra.file">
+    <comment>Geogebra file</comment>
+    <glob pattern="*.ggb"/>
+    <sub-class-of type="application/zip"/>
+  </mime-type>
+  
 </mime-info>
